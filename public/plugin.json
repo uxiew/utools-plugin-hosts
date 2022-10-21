@@ -1,0 +1,21 @@
+{
+  "preload": "preload/preload.js",
+  "main": "index.html",
+  "logo": "logo.png",
+  "development": {
+    "main": "http://localhost:3000/index.html"
+  },
+  "features": [
+    {
+      "code": "hosts",
+      "explain": "hosts切换",
+      "cmds": ["hosts"]
+    }
+  ],
+  "name": "hosts",
+  "pluginName": "hosts切换",
+  "description": "管理你的hosts文件",
+  "author": "ChandlerVer5-福州猿力信息科技有限公司",
+  "homepage": "https://u.tools",
+  "version": "2.0.3"
+}

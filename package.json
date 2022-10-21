@@ -1,0 +1,31 @@
+{
+  "name": "hosts",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@cloudbase/js-sdk": "^1.7.2",
+    "@varlet/touch-emulator": "^1.27.12",
+    "@varlet/ui": "^1.27.12",
+    "cloudbase-adapter-electron": "^1.0.8",
+    "monaco-editor": "^0.32.1",
+    "pinia": "^2.0.11",
+    "vue": "^3.2.31"
+  },
+  "devDependencies": {
+    "@mdi/font": "^6.5.95",
+    "@vitejs/plugin-vue": "^2.2.0",
+    "@vuetify/vite-plugin": "^1.0.0-alpha.10",
+    "sass": "^1.49.9",
+    "typescript": "^4.5.4",
+    "unplugin-vue-components": "^0.17.21",
+    "utools-api-types": "^2.3.0",
+    "vite": "^2.8.0",
+    "vite-plugin-monaco-editor": "^1.0.10",
+    "vue-tsc": "^0.29.8"
+  }
+}
