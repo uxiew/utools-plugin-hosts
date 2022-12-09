@@ -93,10 +93,10 @@ window.openHelpUrl = function () {
  */
 window.flushDns = function () {
   if (this.platForm === 'win32') {
-    cp.exec('ipconfig /flushdns', err => {});
+    cp.exec('ipconfig /flushdns', (err) => {});
   } else if (this.platForm === 'linux') {
-    cp.exec('rcnscd restart', err => {});
+    cp.exec('rcnscd restart', (err) => {});
   } else if (this.platForm === 'darwin') {
-    cp.exec('killall -HUP mDNSResponder', err => {});
+    cp.exec('killall -HUP mDNSResponder', (err) => {});
   }
 };
