@@ -1,39 +1,33 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import Common from './common.vue';
-import Custom from './custom.vue';
-import Settings from './settings.vue';
+import { ref } from 'vue';
+import CommonRule from './CommonRule.vue';
+import CustomRule from './CustomRule.vue';
+import Actions from './Actions.vue';
 import { useHostsStore } from '@/stores/hosts';
-// import { login } from '@/coomon/cloud_dev';
-
-defineProps<{ msg: string }>();
-const active = ref(0);
-const items = [
-  { text: 'Real-Time', icon: 'mdi-clock' },
-  { text: 'Audience', icon: 'mdi-account' },
-  { text: 'Conversions', icon: 'mdi-flag' }
-];
-
-const { revealHostsFile } = useHostsStore();
-
-/* const loginCB = () => {
-  console.log('start login!');
-   login();
-}; */
 </script>
 
 <template>
   <div class="sidebar">
     <div>
       <div class="sidebar-top">
-        <var-button text type="primary" size="large">当前系统 hosts</var-button>
+        <var-button
+          text
+          type="primary"
+          size="large"
+          @click="useHostsStore().currentId = 'system'"
+          :class="{
+            'hosts-active': useHostsStore().currentId === 'system'
+          }"
+        >
+          当前系统 hosts
+        </var-button>
       </div>
-      <Common />
-      <Custom />
+      <CommonRule />
+      <CustomRule />
     </div>
 
     <!-- footer  Settings-->
-    <Settings />
+    <Actions />
   </div>
 </template>
 
@@ -47,6 +41,10 @@ const { revealHostsFile } = useHostsStore();
   width: 230px;
   padding: 10px 0;
   color: #333;
+
+  .var-button {
+    border-radius: 0;
+  }
 
   &-top button {
     display: block;
@@ -62,8 +60,9 @@ const { revealHostsFile } = useHostsStore();
     color: #333;
     font-size: 14px;
   }
-  &-footer {
-    height: 50px;
+
+  .var-button--text:hover {
+    background-color: var(--hover-background);
   }
 }
 </style>

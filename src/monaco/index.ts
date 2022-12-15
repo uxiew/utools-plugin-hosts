@@ -4,13 +4,14 @@ import 'monaco-editor/esm/vs/editor/standalone/browser/accessibilityHelp/accessi
 import 'monaco-editor/esm/vs/basic-languages/monaco.contribution';
 
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import { Ref, unref, onMounted } from 'vue';
 
 type editorOptions = monaco.editor.IStandaloneEditorConstructionOptions;
 
 // 预置参数
 const monacoOptions: editorOptions = {
-  readOnly: true,
   //   theme: 'vs-dark',
+  value: '',
   language: 'ini',
   fontSize: 14,
   automaticLayout: true,
@@ -38,16 +39,24 @@ const monacoOptions: editorOptions = {
 };
 
 // 生成 Monaco Editor
-const createEditor = (id: string, options: editorOptions) => {
-  const editorContainer = document.querySelector(id) as HTMLElement;
-  if (editorContainer !== null) {
-    monaco.editor.create(editorContainer, {
-      ...monacoOptions,
-      ...options
-    });
-  } else {
-    throw new Error(`NO ${id} Element! Please check this id parameter!`);
-  }
-};
+export default (target: Ref, onValueChange: Function) => {
+  let editor: monaco.editor.IStandaloneCodeEditor | null = null;
 
-export { createEditor };
+  const init = () => {
+    const el = unref(target);
+    if (!el) return;
+    editor = monaco.editor.create(el, monacoOptions);
+
+    editor.getModel()?.onDidChangeContent(() => {
+      onValueChange(editor!.getValue());
+    });
+  };
+
+  !editor && init();
+
+  const setContent = (content: string) => {
+    if (editor) editor.setValue(content);
+  };
+
+  return { setContent, getEditor: () => editor };
+};

@@ -12,7 +12,8 @@ declare global {
   interface Window {
     hostsFilePath: string;
     hosts: {
-      read: () => '';
+      read: () => string;
+      write: (data: string | undefined, callback: Function) => any;
     };
   }
 }
