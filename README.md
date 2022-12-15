@@ -1,6 +1,11 @@
 # 简介
 hosts切换插件可以轻松创建多套 hosts 方案，并快速进行合并切换。
 
+
+
+![utools-plugin-hosts](./demo/hosts-demo.jpg)
+
+
 # 插件说明
 
 公共配置：首次使用插件时，将读取系统现有 hosts 文件中的内容作为公共配置
