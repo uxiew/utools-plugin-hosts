@@ -13,7 +13,7 @@ const monacoOptions: editorOptions = {
   //   theme: 'vs-dark',
   value: '',
   language: 'ini',
-  fontSize: 14,
+  fontSize: 13,
   automaticLayout: true,
   hideCursorInOverviewRuler: true,
   overviewRulerBorder: false,

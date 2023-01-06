@@ -1,41 +1,80 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, onUnmounted } from 'vue';
 import { useHostsStore } from '@/stores/hosts';
-import { revealHostsFile } from '@/common/utils';
+import { getDBData, revealHostsFile, saveToDB } from '@/common/utils';
+import { SYSTEM_ID } from '@/common/config';
 import useEditor from '@/monaco';
 import type { editor } from 'monaco-editor';
 
-// const porps = defineProps<{ setContent: () => void }>;
-
+const shortcutKey = utools.isMacOs() ? 'CMD+S' : 'CTRL+S';
+const btnDisabled = ref(true);
 const editorRef = ref();
 const hostsStore = useHostsStore();
 
-const { system, getHostsById, rules } = hostsStore;
+const { getSysHosts, common, setSysHosts, getHostsById, rules } = hostsStore;
 
-let setEditorContent = (content: string) => {};
+let setEditorContent = (_content: string) => {};
 let MonacoEditor: editor.IStandaloneCodeEditor | null = null;
+
+// 原始内容
+let originalHost = '';
 
 // 设置编辑器内容
 watch(
   () => hostsStore.currentId,
   (id) => {
-    console.log(id);
-    MonacoEditor?.updateOptions({ readOnly: id === 'system' });
+    MonacoEditor?.updateOptions({ readOnly: id === SYSTEM_ID });
+    originalHost = getDBData(hostsStore.currentId)?.content;
     setEditorContent(getHostsById(id).content);
   }
 );
 
 // 写入到 store
 const onValueChange = (value: string) => {
+  if (originalHost === value) return (btnDisabled.value = true);
+  btnDisabled.value = false;
+
+  hostsStore.currentId === common.id && (common.content = value);
   rules[hostsStore.currentId] && (rules[hostsStore.currentId].content = value);
 };
 
+// save data to local db
+const save = () => {
+  const id = hostsStore.currentId;
+  originalHost = MonacoEditor?.getValue()!;
+  btnDisabled.value = true;
+
+  if (id === common.id) {
+    setSysHosts();
+    saveToDB(id, common);
+  } else {
+    saveToDB(id, rules[id]);
+  }
+};
+
+function keydownToSave(e: KeyboardEvent) {
+  if (btnDisabled.value || hostsStore.currentId === SYSTEM_ID) return;
+  if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+    // 执行save方法
+    save();
+    // 阻止默认事件
+    e.preventDefault();
+  }
+}
+
 onMounted(() => {
+  document.addEventListener('keydown', keydownToSave, false);
+
   const { setContent, getEditor } = useEditor(editorRef, onValueChange);
   setEditorContent = setContent;
   MonacoEditor = getEditor();
+  MonacoEditor?.updateOptions({ readOnly: hostsStore.currentId === SYSTEM_ID });
   // 默认显示系统 Hosts
-  setContent(system.content);
+  setContent(getSysHosts().content);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', keydownToSave, false);
 });
 </script>
 
@@ -47,15 +86,17 @@ onMounted(() => {
     <div
       class="footer"
       :style="
-        hostsStore.currentId === 'system' ? '' : 'justify-content: flex-end'
+        hostsStore.currentId === SYSTEM_ID ? '' : 'justify-content: flex-end'
       "
     >
-      <template v-if="hostsStore.currentId === 'system'">
+      <template v-if="hostsStore.currentId === SYSTEM_ID">
         <p class="footer-local" @click="revealHostsFile">打开 hosts 文件</p>
         <p class="footer-status">只读，无法直接编辑</p>
       </template>
       <template v-else>
-        <var-button type="primary">保存（CMD+S）</var-button>
+        <var-button type="primary" :disabled="btnDisabled" @click="save">
+          保存（{{ shortcutKey }}）
+        </var-button>
       </template>
     </div>
   </div>

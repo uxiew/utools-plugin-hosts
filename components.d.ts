@@ -16,6 +16,7 @@ declare module 'vue' {
     Ripple: typeof import('@varlet/ui')['_RippleComponent']
     Rule: typeof import('./src/components/Rule.vue')['default']
     Rules: typeof import('./src/components/Rules.vue')['default']
+    RulesUpdate: typeof import('./src/components/RulesUpdate.vue')['default']
     Setting: typeof import('./src/components/Setting.vue')['default']
     Settings: typeof import('./src/components/Settings.vue')['default']
     SettingsCopy: typeof import('./src/components/Settings-copy.vue')['default']

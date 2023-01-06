@@ -1,11 +1,22 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { reactive, watch } from 'vue';
 import { useHostsStore } from '@/stores/hosts';
+import { saveToDB } from '@/common/utils';
+import { SETTING_ID } from '@/common/config';
 
 defineProps(['show']);
 defineEmits(['updates:show']);
 
-const { settings } = useHostsStore();
+const hostsStore = useHostsStore();
+const settings = reactive(hostsStore.settings);
+
+watch(settings, (sets) => {
+  for (const k in sets) {
+    // @ts-ignore
+    hostsStore.settings[k] = sets[k];
+  }
+  saveToDB(SETTING_ID, sets);
+});
 </script>
 
 <template>
@@ -21,7 +32,7 @@ const { settings } = useHostsStore();
     >
       <var-cell>
         允许选择多个方案
-        <var-switch v-model="settings.multipleSelect" />
+        <var-switch v-model="settings.multiSelect" />
       </var-cell>
     </var-dialog>
   </div>

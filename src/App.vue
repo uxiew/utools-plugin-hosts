@@ -1,12 +1,14 @@
 <script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import Sidebar from './components/Sidebar.vue';
+import { useRulesStore, Rule } from '@/stores/rules';
+import { useHostsStore } from '@/stores/hosts';
 import Editor from './components/Editor.vue';
+import Sidebar from './components/Sidebar.vue';
 
+utools.onPluginEnter(({ code, type, payload }) => {
+  console.log(code, type, payload);
+});
 utools.onPluginReady(() => {
   // TODO sync hosts
-  //   utools.dbStorage.setItem('pai', 3.1415926)
   console.log('onPluginReady');
 });
 

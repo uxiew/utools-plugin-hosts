@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import CommonRule from './CommonRule.vue';
 import CustomRule from './CustomRule.vue';
 import Actions from './Actions.vue';
 import { useHostsStore } from '@/stores/hosts';
+import { SYSTEM_ID } from '@/common/config';
 </script>
 
 <template>
@@ -14,9 +14,9 @@ import { useHostsStore } from '@/stores/hosts';
           text
           type="primary"
           size="large"
-          @click="useHostsStore().currentId = 'system'"
+          @click="useHostsStore().currentId = SYSTEM_ID"
           :class="{
-            'hosts-active': useHostsStore().currentId === 'system'
+            'hosts-active': useHostsStore().currentId === SYSTEM_ID
           }"
         >
           当前系统 hosts

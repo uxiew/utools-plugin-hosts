@@ -63,6 +63,7 @@ function exec(command, s) {
 }
 window.hostsFilePath = hostsFile;
 
+// 系统 hosts 读取和写入操作
 window.hosts = {
   read: function () {
     if (!fs.existsSync(hostsFile))

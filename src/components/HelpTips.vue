@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { revealHostsFile } from '@/common/utils';
 defineProps(['show']);
-defineEmits(['update:show']);
+const emit = defineEmits(['update:show']);
 </script>
 
 <template>

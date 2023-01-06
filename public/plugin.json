@@ -14,7 +14,7 @@
   ],
   "name": "hosts",
   "pluginName": "hosts切换",
-  "description": "管理你的hosts文件",
+  "description": "hosts切换插件可以轻松创建多套hosts方案，并快速进行合并切换。",
   "author": "ChandlerVer5-福州猿力信息科技有限公司",
   "homepage": "https://u.tools",
   "version": "2.0.3"

@@ -1,10 +1,10 @@
 # 简介
-hosts切换插件可以轻松创建多套 hosts 方案，并快速进行合并切换。
 
+🎉 Store, manage and switch your hosts quickly.
 
+hosts切换插件可以轻松创建多套hosts方案，并快速进行合并切换。
 
 ![utools-plugin-hosts](./demo/hosts-demo.jpg)
-
 
 # 插件说明
 
@@ -25,7 +25,7 @@ hosts切换插件可以轻松创建多套 hosts 方案，并快速进行合并�
 - 自定义方案 支持单选/多选
 - 自定义方案支持右键菜单进行管理
 - ~~支持 明亮/黑暗 两种配色~~
-- 支持 vim 模式编辑
+- ~~支持 vim 模式编辑~~
 
 # 如何清理浏览器缓存
 
@@ -63,13 +63,14 @@ Tips： 上述方法无效可以尝试重启机器。
 - [x] 添加特定网站，一键优选 ip
 
 
-# Refs
-https://github.com/eshengsky/HostsDock
+# 资源
+https://github.com/521xueweihan/GitHub520
 
 https://github.com/oldj/SwitchHosts
 
 https://github.com/AaronFeng753/Smart-Hosts-Manager
 
+https://github.com/fliu2476/gh-hosts/
+
 https://github.com/jianboy/github-host
 
-https://github.com/fliu2476/gh-hosts/blob/main/index.js

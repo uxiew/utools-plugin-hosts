@@ -1,9 +1,27 @@
 <script setup lang="ts">
+import { SYSTEM_ID } from '@/common/config';
+import { saveToDB } from '@/common/utils';
 import { useHostsStore } from '@/stores/hosts';
 import { useRulesStore } from '@/stores/rules';
+import { computed, ref, watch } from 'vue';
 
-const hostsStore = useHostsStore();
 const rulesStore = useRulesStore();
+const hostsStore = useHostsStore();
+const { rules, settings, setSysHosts } = hostsStore;
+
+const iconName = ref('check');
+
+watch(
+  () => settings.multiSelect,
+  (val: boolean) => {
+    iconName.value = val ? 'check' : 'radio-marked';
+  },
+  { immediate: true }
+);
+
+const AllRules = computed(() =>
+  Object.values(hostsStore.rules).sort((v1, v2) => v1.order - v2.order)
+);
 
 const ACTION_TYPES = {
   ENABLE: 0,
@@ -12,15 +30,24 @@ const ACTION_TYPES = {
 };
 
 const doAction = (id: string, type: number) => {
-  const { rules } = hostsStore;
   switch (type) {
     case ACTION_TYPES.ENABLE:
-      toggleRule(id);
+      {
+        toggleRule(id);
+        setSysHosts();
+      }
       break;
     case ACTION_TYPES.UPDATE:
+      {
+        hostsStore.updating = id;
+      }
       break;
     case ACTION_TYPES.DELETE:
-      rulesStore.delRule(id);
+      {
+        rulesStore.delRule(id);
+        hostsStore.currentId = SYSTEM_ID;
+        setSysHosts();
+      }
       break;
     default:
       break;
@@ -30,27 +57,26 @@ const doAction = (id: string, type: number) => {
 
 // 激活
 function toggleRule(id: string) {
-  const { rules, settings, setSysHosts } = hostsStore;
-  rules[id].active = !rules[id].active;
-  if (!settings.multipleSelect) {
+  const active = rules[id].active;
+  if (!settings.multiSelect) {
     for (const k in rules) {
-      if (rules[k].id === id) continue;
-      rules[k].active = false;
+      if (rules[k].id === id) {
+        rules[id].active = !active;
+        saveToDB(id, { active: !active });
+        continue;
+      }
+      rules[k].active = active && rules[k].active ? true : false;
     }
+  } else {
+    rules[id].active = !active;
+    saveToDB(id, { active: !active });
   }
-
-  // 设置 hosts
-  setSysHosts({
-    name: rules[id].name,
-    content: rules[id].content
-  });
 }
 
 function showRule(id: string) {
   hostsStore.currentId = id;
 }
 function onContextMenu(id: string) {
-  const { rules } = hostsStore;
   for (const key in rules) {
     rules[key].showMenu = false;
   }
@@ -62,7 +88,7 @@ function onContextMenu(id: string) {
   <h5>自定义</h5>
   <div class="sidebar-list">
     <var-menu
-      v-for="{ id, name, active } in hostsStore.rules"
+      v-for="{ id, name, active } in AllRules"
       :key="id"
       v-model:show="hostsStore.rules[id].showMenu"
       offset-x="100px"
@@ -79,9 +105,7 @@ function onContextMenu(id: string) {
           'hosts-active': hostsStore.currentId === id
         }"
       >
-        <!-- <var-icon v-if="active" name="checkbox-marked-circle" /> -->
-        <!-- <var-icon v-if="active" name="check" /> -->
-        <var-icon v-if="active" name="radio-marked" />
+        <var-icon v-if="active" :name="iconName" />
         <span>{{ name }}</span>
       </var-button>
 

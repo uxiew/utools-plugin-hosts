@@ -18,7 +18,7 @@ const { common } = hostsStore;
       }"
     >
       <var-icon v-if="common.active" name="checkbox-marked-circle" />
-      <span>{{ common.name }}</span>
+      <span>公共配置</span>
     </var-button>
   </div>
 </template>

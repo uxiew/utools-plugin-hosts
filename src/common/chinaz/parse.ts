@@ -95,7 +95,7 @@ export function getBestIP(IPs: ResultIP[]) {
 }
 
 /**
- * @description 检测 urls
+ * @description 检测 url
  *
  */
 export async function pickBestIP(url: string, IPs: IPInfo[], log: Function) {
