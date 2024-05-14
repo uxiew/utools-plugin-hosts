@@ -1,6 +1,6 @@
 # 简介
 
-🎉 Store, manage and switch your hosts quickly.
+【WIP】🎉 Store, manage and switch your hosts quickly.
 
 hosts切换插件可以轻松创建多套hosts方案，并快速进行合并切换。
 
